@@ -9,9 +9,72 @@
 
 @section('content')
   <p>ここが本文のコンテンツです。</p>
-  <p>必要なだけ記述できます。</p>
 
-  @component('components.message')
+  <p>これは<middleware>google.com</middleware>へのリンクです。</p>
+  <p>これは<middleware>yahoo.co.jp</middleware>へのリンクです。</p>
+
+  <p>{{$msg}}</p>
+
+  @if (count($errors) > 0)
+    <p>入力に誤りがあります。再入力してください。</p>
+    <!-- <div>
+      <ul>
+        @foreach($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div> -->
+  @endif
+
+  <form action="/hello" method="post">
+    <table>
+      @csrf
+
+      @error('name')
+        <tr>
+          <th>ERROR</th>
+          <td>{{$errors->first('name')}}</td>
+        </tr>
+      @enderror
+      <tr>
+        <th>name: </th>
+        <td><input type="text" name="name" value="{{old('name')}}"></td>
+      </tr>
+
+      @error('mail')
+        <tr>
+          <th>ERROR</th>
+          <td>{{$errors->first('mail')}}</td>
+        </tr>
+      @enderror
+      <tr>
+        <th>mail: </th>
+        <td><input type="text" name="mail" value="{{old('mail')}}"></td>
+      </tr>
+
+      @error('age')
+        <tr>
+          <th>ERROR</th>
+          <td>{{$errors->first('age')}}</td>
+        </tr>
+      @enderror
+      <tr>
+        <th>age: </th>
+        <td><input type="text" name="age" value="{{old('age')}}"></td>
+      </tr>
+      <tr>
+        <th>send: </th>
+        <td><input type="submit" name="send"></td>
+      </tr>
+    </table>
+
+  </form>
+
+
+  <!-- <p>必要なだけ記述できます。</p> -->
+
+
+  <!-- @component('components.message')
     @slot('msg_title')
     CAUTION!
     @endslot
@@ -23,9 +86,7 @@
 
   @include('components.message', ['msg_title' => 'OK', 'msg_content' => 'サブビューです。'])
 
-  <ul>
-    @each('components.item', $data, 'item')
-  </ul>
+ -->
 @endsection
 
 @section('footer')

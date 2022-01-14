@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\HelloMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,6 +24,8 @@ Route::get('/', function () {
 // Route::get('hello/{id?}/{pass?}', 'HelloController@index');
 
 Route::get('hello', 'HelloController@index');
-// Route::get('hello/other', 'HelloController@other');
+Route::post('hello', 'HelloController@post');
+    // ->middleware('group.hello');
+Route::get('hello/other', 'HelloController@other');
 
 // Route::get('hello', 'HelloController');

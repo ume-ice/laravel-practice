@@ -13,7 +13,6 @@
   <p>これは<middleware>google.com</middleware>へのリンクです。</p>
   <p>これは<middleware>yahoo.co.jp</middleware>へのリンクです。</p>
 
-  <p>{{$msg}}</p>
 
   @if (count($errors) > 0)
     <p>入力に誤りがあります。再入力してください。</p>
@@ -30,37 +29,44 @@
     <table>
       @csrf
 
-      @error('name')
+      @if (0)
+        @error('name')
+          <tr>
+            <th>ERROR</th>
+            <td>{{$errors->first('name')}}</td>
+          </tr>
+        @enderror
         <tr>
-          <th>ERROR</th>
-          <td>{{$errors->first('name')}}</td>
+          <th>name: </th>
+          <td><input type="text" name="name" value="{{old('name')}}"></td>
         </tr>
-      @enderror
-      <tr>
-        <th>name: </th>
-        <td><input type="text" name="name" value="{{old('name')}}"></td>
-      </tr>
 
-      @error('mail')
+        @error('mail')
+          <tr>
+            <th>ERROR</th>
+            <td>{{$errors->first('mail')}}</td>
+          </tr>
+        @enderror
         <tr>
-          <th>ERROR</th>
-          <td>{{$errors->first('mail')}}</td>
+          <th>mail: </th>
+          <td><input type="text" name="mail" value="{{old('mail')}}"></td>
         </tr>
-      @enderror
-      <tr>
-        <th>mail: </th>
-        <td><input type="text" name="mail" value="{{old('mail')}}"></td>
-      </tr>
 
-      @error('age')
+        @error('age')
+          <tr>
+            <th>ERROR</th>
+            <td>{{$errors->first('age')}}</td>
+          </tr>
+        @enderror
         <tr>
-          <th>ERROR</th>
-          <td>{{$errors->first('age')}}</td>
+          <th>age: </th>
+          <td><input type="text" name="age" value="{{old('age')}}"></td>
         </tr>
-      @enderror
+      @endif
+
       <tr>
-        <th>age: </th>
-        <td><input type="text" name="age" value="{{old('age')}}"></td>
+        <th>Messeage: </th>
+        <td><input type="text" name="msg" value="{{old('msg')}}"></td>
       </tr>
       <tr>
         <th>send: </th>
@@ -69,6 +75,21 @@
     </table>
 
   </form>
+
+  <table>
+    <tr>
+      <th>name</th>
+      <th>mail</th>
+      <th>age</th>
+    </tr>
+    @foreach ($items as $item)
+      <tr>
+        <td>{{$item->name}}</td>
+        <td>{{$item->mail}}</td>
+        <td>{{$item->age}}</td>
+      </tr>
+    @endforeach
+  </table>
 
 
   <!-- <p>必要なだけ記述できます。</p> -->

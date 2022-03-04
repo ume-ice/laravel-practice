@@ -2,53 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Person;
+use App\Board;
 use Illuminate\Http\Request;
 
-class PersonController extends Controller
+class BoardController extends Controller
 {
     public function index(Request $request)
     {
-        $items = Person::all();
-
-        $hasItems = Person::has('boards')->get();
-        $noItems = Person::doesntHave('boards')->get();
-        $params = [
-            'hasItems' => $hasItems,
-            'noItems' => $noItems,
-        ];
-        return view('person.index', $params);
-    }
-
-    public function find(Request $request)
-    {
-        return view('person.find', ['input' => '']);
-    }
-
-    public function search(Request $request)
-    {
-        $min = $request->input * 1;
-        $max = $min + 10;
-        $item = Person::ageGreaterThan($min)
-            ->ageLessThan($max)
-            ->first();
-        $param = ['input' => $request->input, 'item' => $item];
-        return view('person.find', $param);
+        $items = Board::with('person')->get();
+        return view('board.index', ['items' => $items]);
     }
 
     public function add(Request $request)
     {
-        return view('person.add');
+        return view('board.add');
     }
 
     public function create(Request $request)
     {
-        $this->validate($request, Person::$rules);
-        $person = new Person;
+        $this->validate($request, Board::$rules);
+        $board = new Board;
         $form = $request->all();
         unset($form['_token']);
-        $person->fill($form)->save();
-        return redirect('/person');
+        $board->fill($form)->save();
+        return redirect('/board');
     }
 
     public function edit(Request $request)

@@ -8,6 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
+    protected $guarded = ['id'];
+
+    public static $rules = [
+        'name' => 'required',
+        'mail' => 'email',
+        'age' => 'integer|min:0|max:150',
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -22,6 +30,11 @@ class Person extends Model
     public function getData()
     {
         return $this->id . ': ' . $this->name . ' (' . $this->age . ')';
+    }
+
+    public function boards()
+    {
+        return $this->hasMany('App\Board');
     }
 
     public function scopeNameEqual($query, $str)

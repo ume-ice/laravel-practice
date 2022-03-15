@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Person;
 use App\Http\Requests\HelloRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -44,12 +45,18 @@ class HelloController extends Controller
         // }
 
         // $items = DB::select('select * from people');
-        $items = DB::table('people')
-            ->orderBy('age', 'asc')
-            ->get();
+        // $items = DB::table('people')
+        //     ->orderBy('age', 'asc')
+        //     ->get();
+
+        $sort = $request->sort;
+
+        // $items = DB::table('people')->simplePaginate(5);
+        $items = Person::orderBy($sort, 'asc')->paginate(5);
+        $param = ['items' => $items, 'sort' => $sort];
 
         // return view('hello.index', ['msg' => 'フォームを入力してください。']);
-        return view('hello.index', ['items' => $items]);
+        return view('hello.index', $param);
         // return view('hello.index');
     }
 

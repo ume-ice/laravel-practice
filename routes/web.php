@@ -23,7 +23,7 @@ Route::get('/', function () {
 
 // Route::get('hello/{id?}/{pass?}', 'HelloController@index');
 
-Route::get('hello', 'HelloController@index');
+Route::get('hello', 'HelloController@index')->middleware('auth');
 Route::post('hello', 'HelloController@post');
     // ->middleware('group.hello');
 
@@ -45,7 +45,8 @@ Route::get('hello/rest', 'HelloController@rest');
 Route::get('hello/session', 'HelloController@ses_get');
 Route::post('hello/session', 'HelloController@ses_put');
 
-// Route::get('hello', 'HelloController');
+Route::get('hello/auth', 'HelloController@getAuth');
+Route::post('hello/auth', 'HelloController@postAuth');
 
 Route::get('person', 'PersonController@index');
 Route::get('person/find', 'PersonController@find');

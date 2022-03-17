@@ -6,6 +6,7 @@ use App\Person;
 use App\Http\Requests\HelloRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Validator;
@@ -49,15 +50,25 @@ class HelloController extends Controller
         //     ->orderBy('age', 'asc')
         //     ->get();
 
-        $sort = $request->sort;
+        // $sort = $request->sort;
 
         // $items = DB::table('people')->simplePaginate(5);
-        $items = Person::orderBy($sort, 'asc')->paginate(5);
-        $param = ['items' => $items, 'sort' => $sort];
+        // $items = Person::orderBy($sort, 'asc')->paginate(5);
+        // $param = ['items' => $items, 'sort' => $sort];
 
         // return view('hello.index', ['msg' => 'フォームを入力してください。']);
-        return view('hello.index', $param);
+        // return view('hello.index', $param);
         // return view('hello.index');
+
+        $user = Auth::user();
+        $sort = $request->sort;
+        $items = Person::orderBy($sort, 'asc')->simplePaginate(5);
+        $param = [
+            'items' => $items,
+            'sort' => $sort,
+            'user' => $user,
+        ];
+        return view('hello.index', $param);
     }
 
     // public function post(Request $request) {
@@ -115,6 +126,22 @@ class HelloController extends Controller
         // }
 
         // return view('hello.index', ['msg' => '正しく入力されました！']);
+    }
+
+    public function getAuth(Request $request) {
+        $param = ['message' => 'ログインして下さい'];
+        return view('hello.auth', $param);
+    }
+
+    public function postAuth(Request $request) {
+        $email = $request->email;
+        $password = $request->password;
+        if (Auth::attempt(['email' => $email, 'password' => $password])) {
+            $msg = 'ログインしました。（' . Auth::user()->name . '）';
+        } else {
+            $msg = 'ログインに失敗しました。';
+        }
+        return view('hello.auth', ['message' => $msg]);
     }
 
     public function add(Request $request) {

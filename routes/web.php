@@ -65,3 +65,4 @@ Route::resource('rest', 'RestappController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home2', 'HomeController@index2')->name('home2');
